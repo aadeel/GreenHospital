@@ -1,0 +1,87 @@
+﻿@model IEnumerable<DoctorPatient.Models.DoctorModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+<p>
+    @using (Html.BeginForm("Index", "Doctor", FormMethod.Get))
+    {
+    <p> Title: @Html.TextBox("SearchString") Department: @Html.DropDownList("docDept", "All")<br /> </p>
+        <p><input type="submit" value="Filter" /></p>
+    }
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Degree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DisableNewAppointments)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sex)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Degree)
+                </td>
+                <td>
+                    @(item.DisableNewAppointments ? "Yes" : "No")
+                </td>
+
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Upcoming Appointments", "UpcomingAppointments", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                }
+                else
+                    if ((item.DisableNewAppointments ? "Yes" : "No") == "No")
+                    {
+                        <td>
+                            @Html.ActionLink("Check Availability", "Availability", new { Controller = "Doctor", Action = "Availability", id = item.ID })
+                        </td>
+                    }
+
+            </tr>
+        }
+
+    </table>

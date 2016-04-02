@@ -1,0 +1,54 @@
+﻿@model DoctorPatient.Models.AppointmentModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Appointment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @if (User.IsInRole("Admin, Patient"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.AppointmentID })
+    }
+    @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+    <a href="javascript:void(0);" onclick="history.go(-1);">Go Back</a>
+</p>

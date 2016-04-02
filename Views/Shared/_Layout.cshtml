@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Online Doctor Appointment</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Hospital", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Doctors", "Index", "Doctor")</li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Users", "Index", "RegisteredUsers")</li>
+                        <li>@Html.ActionLink("Appointments", "Index", "Appointment")</li>
+                        <li>@Html.ActionLink("Admin Panel", "Index", "Administration")</li>
+                    }
+                    else if (User.IsInRole("Patient"))
+                    {
+                        <li>@Html.ActionLink("My Appointments", "Details", new { Controller = "RegisteredUsers", Action = "Details" })</li>
+                        <li>@Html.ActionLink("Create Appointment", "Create", new { Controller = "Appointment", Action = "Create" })</li>
+                    }
+                    else if (User.IsInRole("Doctor"))
+                    {
+                        <li>@Html.ActionLink("Upcoming Appointments", "UpcomingAppointments", new { Controller = "Doctor", Action = "UpcomingAppointments", id = User.Identity.Name })</li>
+                        <li>@Html.ActionLink("Appointment History", "History", new { Controller = "Doctor", Action = "History", id = User.Identity.Name })</li>
+                    }
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Hospital LLC</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

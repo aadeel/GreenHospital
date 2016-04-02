@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DoctorPatient.ViewModels.AppointmentDateGroupViewModel>
+
+@{
+    ViewBag.Title = "Hospital Statistics";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Appointments
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppointmentDate)
+            </td>
+            <td>
+                @item.PatientCount
+            </td>
+        </tr>
+    }
+</table>

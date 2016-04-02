@@ -1,0 +1,90 @@
+﻿@model DoctorPatient.Models.DoctorModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Doctor</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BirthDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BirthDate)
+                @Html.ValidationMessageFor(model => model.BirthDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Sex, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Sex)
+                @Html.ValidationMessageFor(model => model.Sex)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Department, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Department)
+                @Html.ValidationMessageFor(model => model.Department)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Degree, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Degree)
+                @Html.ValidationMessageFor(model => model.Degree)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisableNewAppointments, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DisableNewAppointments, new SelectList(new[]
+           {
+            new { Value = "true", Text = "Yes" },
+            new { Value = "false", Text = "No" },
+        },
+        "Value",
+        "Text",
+        Model
+    ))
+                @Html.ValidationMessageFor(model => model.DisableNewAppointments)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

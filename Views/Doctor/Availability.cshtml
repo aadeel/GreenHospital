@@ -1,0 +1,80 @@
+﻿@model DoctorPatient.Models.AppointmentModel
+
+@{
+    ViewBag.Title = "Doctor Availability";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <h4>Availability</h4>
+        <hr />
+        <div class="form-group">
+            @Html.Label("Doctor's Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Label((string)ViewBag.DoctorName, new { @class = "control-label col-md-2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { @class = "control-label col-md-2" })
+                @Html.ValidationMessageFor(model => model.Date)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Available Appointments", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TimeBlockHelper", String.Empty)
+                @Html.ValidationMessageFor(model => model.Time)
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+    <a href="javascript:void(0);" onclick="history.go(-1);">Go Back</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#TimeBlockHelper').append($("<option></option>").val("placeholder").text("Select Date"));
+            $('#TimeBlockHelper').val("placeholder");
+            $("#TimeBlockHelper").prop("disabled", true);
+            $("#Date").change(function () {
+                if ($("#Date").val() != "") {
+                    var options = {};
+                    options.url = "/Appointment/GetAvailableAppointments";
+                    options.type = "POST";
+                    options.data = JSON.stringify({ docID: '@Model.DoctorID', Date: $("#Date").val() });
+                    options.dataType = "json";
+                    options.contentType = "application/json";
+                    options.success = function (data) {
+                        data = $.map(data, function (item, a) {
+                            return "<option value=" + item.Value + ">" + item.Text + "</option>";
+                        });
+
+                        $("#TimeBlockHelper").html(data.join(""));
+                        $("#TimeBlockHelper").prop("disabled", false);
+                    };
+                    options.error = function () { alert("Error retrieving available appointments!"); };
+                    $.ajax(options);
+                }
+                else {
+                    $("#TimeBlockHelper").empty();
+                    $('#TimeBlockHelper').append($("<option></option>").val("placeholder").text("Select Date"));
+                    $('#TimeBlockHelper').val("placeholder");
+                    $("#TimeBlockHelper").prop("disabled", true);
+                }
+            });
+        });
+    </script>
+}

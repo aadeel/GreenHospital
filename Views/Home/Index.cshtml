@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2>Welcome to Hospital</h2>
+    <p class="lead">Where Care Comes First</p>
+    @*<p><a href="http://google.com" class="btn btn-primary btn-large">Learn more &raquo;</a></p>*@
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="~/Media/12354.png" />
+        <h2>Find Doctors</h2>
+        <p>
+            Get the best in health care with the help of our highly qualified doctors. Click the button below to get started.
+        </p>
+        <p></p>
+        <p><a class="btn btn-default" href="@Url.Action("Index","Doctor")">Find Doctors &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <img src="~/Media/1339788964763703.jpg" />
+        <h2>Create Appointments</h2>
+        <p>Setting up appointments has never been so easy. Its just a registration and few clicks away.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Create","Appointment")">Create now &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <img src="~/Media/1hospital.jpg" />
+        <h2>View Statistics</h2>
+        <p>Want to know how well we are doing? Check it out yourself.</p>
+        <p><a class="btn btn-default" href="@Url.Action("About","Home")">Show Statistics &raquo;</a></p>
+    </div>
+</div>

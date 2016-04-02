@@ -1,0 +1,82 @@
+﻿@model DoctorPatient.Models.EditUserViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>EditUserViewModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BirthDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BirthDate)
+            @Html.ValidationMessageFor(model => model.BirthDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Sex)
+        </div>
+        <div class="editor-field">
+            @Html.EnumDropDownListFor(model => model.Sex)
+            @Html.ValidationMessageFor(model => model.Sex)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Blocked)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Blocked, new SelectList(
+        new[]
+        {
+            new { Value = "true", Text = "Yes" },
+            new { Value = "false", Text = "No" },
+        },
+        "Value",
+        "Text",
+        Model
+    ))
+            @Html.ValidationMessageFor(model => model.Blocked)
+        </div>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Save" class="btn btn-default" /> |
+            @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+            <a href="javascript:void(0);" onclick="history.go(-1);">Go Back</a>
+        </div>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

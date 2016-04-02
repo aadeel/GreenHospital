@@ -1,0 +1,93 @@
+﻿@model DoctorPatient.Models.AppointmentModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Appointment</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.AppointmentID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DoctorID, "DoctorID", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DoctorID", String.Empty)
+                @Html.ValidationMessageFor(model => model.DoctorID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, "@ViewBag.Date")
+                @Html.ValidationMessageFor(model => model.Date)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Time, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TimeBlockHelper", String.Empty)
+                @Html.ValidationMessageFor(model => model.Time)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+    <a href="javascript:void(0);" onclick="history.go(-1);">Go Back</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#TimeBlockHelper').append($("<option></option>").val("placeholder").text("Select Doctor and Date"));
+            $('#TimeBlockHelper').val("placeholder");
+            $("#TimeBlockHelper").prop("disabled", true);
+            $("#Date, #DoctorID").change(function () {
+                if ($("#DoctorID").val() != "" && $("#Date").val() != "") {
+                    var options = {};
+                    options.url = "/Appointment/GetAvailableAppointments";
+                    options.type = "POST";
+                    options.data = JSON.stringify({ docID: $("#DoctorID").val(), Date: $("#Date").val() });
+                    options.dataType = "json";
+                    options.contentType = "application/json";
+                    options.success = function (data) {
+                        data = $.map(data, function (item, a) {
+                            return "<option value=" + item.Value + ">" + item.Text + "</option>";
+                        });
+
+                        $("#TimeBlockHelper").html(data.join(""));
+                        $("#TimeBlockHelper").prop("disabled", false);
+                    };
+                    options.error = function () { alert("Error retrieving available appointments!"); };
+                    $.ajax(options);
+                }
+                else {
+                    $("#TimeBlockHelper").empty();
+                    $('#TimeBlockHelper').append($("<option></option>").val("placeholder").text("Select Doctor and Date"));
+                    $('#TimeBlockHelper').val("placeholder");
+                    $("#TimeBlockHelper").prop("disabled", true);
+                }
+            });
+            $('#DoctorID').trigger('change');
+        });
+    </script>
+}

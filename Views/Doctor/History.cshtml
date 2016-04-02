@@ -1,0 +1,83 @@
+﻿@model DoctorPatient.Models.DoctorModel
+
+@{
+    ViewBag.Title = "Appointment Hitory";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>Doctor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Appointments)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+                @foreach (var item in Model.Appointments)
+                {
+                    if (item.Date.Date.Add(item.Time.TimeOfDay).CompareTo(DateTime.Now) < 0)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Time)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { Controller = "Appointment", Action = "Details", id = item.AppointmentID }) |
+                                @Html.ActionLink("Delete", "Delete", new { Controller = "Appointment", Action = "Details", id = item.AppointmentID })
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @*Use the browser's internal history. Otherwise Redirectin to all Appointments*@
+    <a href="javascript:void(0);" onclick="history.go(-1);">Go Back</a>
+</p>
